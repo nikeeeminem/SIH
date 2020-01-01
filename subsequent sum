@@ -1,0 +1,83 @@
+l1 = []
+l2 = []
+
+def subsetl1(arr,ans,id,a,b):
+    #global count
+    #print(ans)
+    sumi = sum(ans)
+    l1.append(sumi)
+    for i in range(id,len(arr)):
+        ans.append(arr[i])
+        subsetl1(arr,ans,i+1,a,b)
+        ans.pop(-1)
+    return
+def subsetl2(arr,ans,id,a,b):
+    #global count
+    #print(ans)
+    sumi = sum(ans)
+    l2.append(sumi)
+    
+    for i in range(id,len(arr)):
+        ans.append(arr[i])
+        subsetl2(arr,ans,i+1,a,b)
+        ans.pop(-1)
+    return
+
+#floor
+def bstf(a,l,h,x):
+    if x < a[l]:
+        return -1
+    if x > a[h]:
+        return h+1
+    
+    ans = int(-1)
+    while l<=h:
+        mid = (l+h)//2
+        if a[mid] <= x:
+            ans = mid
+            l+=1
+        else:
+            h-=1
+    return ans
+
+#celing
+def bstc(a,l,h,x):
+    if x<a[l]:
+        return -1
+    if x>a[h]:
+        return h+1
+    
+    ans = int(0)
+    while l<=h:
+        mid = (l+h)//2
+        if a[mid]>=x:
+            ans = mid
+            h-=1
+        else:
+            l+=1
+    #print("celing",ans)
+    return ans
+
+def sol(arr,n,a,b):
+    count = int(0)
+    subsetl1(arr[0:n//2],[],0,a,b)
+    subsetl2(arr[n//2:n],[],0,a,b)
+    l2.sort()
+    #print(l2)
+    for i in l1:
+        print("L",a-i)
+        print("H",b-i)
+        lo = bstf(l2,0,len(l2)-1,(a-i))
+        hi = bstc(l2,0,len(l2)-1,(b-i))
+        count += hi-lo
+    return count
+
+for _ in range(int(input())):
+    n,a,b = map(int,input().split())
+    arr = list(map(int,input().split()))
+    count = int(0)
+    print(sol(arr,n,a,b))
+    l1.clear()
+    l2.clear()
+    #print(l1)
+    #print(l2)

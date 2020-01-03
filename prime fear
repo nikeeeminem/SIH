@@ -1,0 +1,28 @@
+import sys
+
+prime = [True for i in range((10**6)+1)]
+prime[0] = False
+
+
+p = 2
+while p*p <= (10**6):
+    if prime[p] == True:
+        n = p+p
+        while(n<=(10**6)):
+            prime[n] = False
+            n = n+p
+        x = 10
+        n = p
+        while(n>1):
+            n = p%x
+            if prime[n]==False:
+                prime[p]=False
+                break
+            x = x*10
+    p+=1
+
+
+print(prime[103])
+
+#for _ in range(int(sys.stdin.readline())):
+#    n = int(sys.stdin.readline())

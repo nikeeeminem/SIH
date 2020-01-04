@@ -1,28 +1,66 @@
 import sys
+import bisect
+
+def sol(a):
+    for i in range((10**6)+1):
+        if a[i]==True:
+            if '0' in str(i):
+                a[i] = False
+    
+    hm=[0]
+    for i in range((10**6)+1):
+        if a[i]==True:
+            q = i
+            mod = 10
+            while q>0:
+                n = i%mod
+                if a[n]==False:
+                    a[i] = False
+                    break
+                q = i//mod
+                mod*=10
+            
+            if q==0:
+                hm.append(i)
+    return hm
+                
+def bst(a,x):
+    l=0
+    h=len(a)-1
+    ans = -1
+    while(l<=h):
+        m = (l+h)//2
+        if a[m]<=x:
+            ans = m
+            l+=1
+        else:
+            h-=1
+    return ans
+            
 
 prime = [True for i in range((10**6)+1)]
 prime[0] = False
-
+prime[1] = False
 
 p = 2
 while p*p <= (10**6):
     if prime[p] == True:
-        n = p+p
-        while(n<=(10**6)):
-            prime[n] = False
-            n = n+p
-        x = 10
-        n = p
-        while(n>1):
-            n = p%x
-            if prime[n]==False:
-                prime[p]=False
-                break
-            x = x*10
+        if '0' in str(p):
+            prime[p] = False
+        else:
+            n = p+p
+            while(n<=(10**6)):
+                prime[n] = False
+                n = n+p
     p+=1
+hm = sol(prime)
 
 
-print(prime[103])
+#print(hm)
 
-#for _ in range(int(sys.stdin.readline())):
-#    n = int(sys.stdin.readline())
+for _ in range(int(sys.stdin.readline())):
+    n = int(sys.stdin.readline())
+    x = bst(hm,n)
+    #print("A",hm[x])
+    sys.stdout.write(str(x)+"\n")
+sys.stdout.flush()

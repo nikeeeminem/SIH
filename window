@@ -1,0 +1,33 @@
+def create(a,k):
+    x = {}
+    for i in range(k):
+        if a[i] in x.keys():
+            x[a[i]]+=1
+        else:
+            x[a[i]]=1
+    return x
+for _ in range(int(input())):
+    n,k = map(int,input().split())
+    a = list(map(int,input().split()))
+    dc = create(a,k)
+    x=a[0:k]
+    ans = max(x)
+    maxi = ans
+    for i in range(k,n):
+        fg=0
+        h=x.pop(0)
+        dc[h]-=1
+        if dc[h] is 0:
+            del(dc[h])
+            if maxi is h:
+                fg=1
+        x.append(a[i])
+        if a[i] in dc.keys():
+            dc[a[i]]+=1
+        else:
+            dc[a[i]] = 1
+        if fg is 1:
+            ans+= max(x)
+        else:
+            ans+=max(maxi,a[i])
+    print(ans)
